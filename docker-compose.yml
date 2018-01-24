@@ -1,0 +1,20 @@
+version: "3"
+services:
+  django:
+    image: django:dev
+    build: .
+    working_dir: /code
+    ports:
+      - '8000:8000'
+    volumes:
+    - './test1:/code'
+  varnish:
+    image: million12/varnish
+    volumes:
+    - '.:/code'
+    environment:
+    - 'VCL_CONFIG=/code/varnish.vcl'
+    ports:
+      - '80:80'
+    depends_on:
+      - django
